@@ -15,22 +15,59 @@ class TennisGame {
 
     playerOneScores() {
         this.playerOneScore++;
+        if(this.playerOneWins())
+            console.log(`Game over. ${this.playerOneName} wins!`)
     }
 
     playerTwoScores() {
         this.playerTwoScore++;
+        if(this.playerTwoWins())
+            console.log(`Game over. ${this.playerTwoName} wins!`)
+    }
+
+    isDeuce(){
+        return(this.playerOneScore === this.playerTwoScore && this.playerTwoScore >= 3);
+    }
+
+    playerOneHasAdvantage(){
+        return (this.playerOneScore >= 4 && (this.playerOneScore - 1) === this.playerTwoScore);
+
+    }
+
+    playerTwoHasAdvantage(){
+        return (this.playerTwoScore >= 4 && (this.playerTwoScore - 1) === this.playerOneScore);
+
+    }
+
+    playerOneWins(){
+        return((this.playerOneScore - this.playerTwoScore) >= 2 && this.playerOneScore >= 4);
+    }
+
+    playerTwoWins(){
+        return((this.playerTwoScore - this.playerOneScore) >= 2 && this.playerTwoScore >= 4);
+    }
+
+    isTied(){
+        return this.playerOneScore === this.playerTwoScore;
     }
 
     getScore() {
-        let playerOneScoreTranslation = this.translations[this.playerOneScore];
 
-        if (this.playerOneScore === this.playerTwoScore)
-            if (this.playerOneScore >= 3)
-                return 'deuce';
-        	return `${playerOneScoreTranslation}-all`;
+        if(this.isDeuce())
+            return 'deuce';
+        else if(this.playerOneHasAdvantage())
+            return `advantage ${this.playerOneName}`;
+        else if(this.playerTwoHasAdvantage())
+            return `advantage ${this.playerTwoName}`;
+        else if(this.playerOneWins())
+            return `${this.playerOneName} wins!`;
+        else if(this.playerTwoWins())
+            return `${this.playerTwoName} wins!`;
+        else if(this.isTied())
+            return `${this.translations[this.playerOneScore]}-all`;
+        else
+            return `${this.translations[this.playerOneScore]}-${this.translations[this.playerTwoScore]}`
 
-        let playerTwoScoreTranslation = this.translations[this.playerTwoScore];
-        return `${playerOneScoreTranslation}-${playerTwoScoreTranslation}`
 
     }
 
